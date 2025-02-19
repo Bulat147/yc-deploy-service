@@ -28,6 +28,9 @@
           - php-xml
           - php-imagick
           - php-zip
+
+          - python3-pymysql
+          - unzip
         state: present
 
     - name: Create database user
@@ -35,11 +38,23 @@
         name: user1
         password: pswd
         state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
 
     - name: Создание базы данных MySQL
       community.mysql.mysql_db:
         name: nextcloud
-        owner: user1
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Установка NextCloud
+      ansible.builtin.unarchive:
+        dest: "/var/www/html"
+        src: "https://download.nextcloud.com/server/releases/latest.zip"
+        remote_src: true
+        owner: "www-data"
+        group: "www-data"
+        creates: "/var/www/html/nextcloud"
+
 
 
 
