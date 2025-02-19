@@ -33,7 +33,7 @@ resource "yandex_vpc_subnet" "subnet" {
 resource "yandex_compute_disk" "boot_disk" {
   name     = "vm-boot-disk"
   type     = "network-ssd"
-  image_id = "fd8hd9kt0cdnhkni2ehu"
+  image_id = "fd8vjqu92c0hufsafn1i"
   size     = 10
   zone = var.zone
 }

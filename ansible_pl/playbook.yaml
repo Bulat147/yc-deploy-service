@@ -33,17 +33,18 @@
           - unzip
         state: present
 
+    - name: Создание базы данных MySQL
+      community.mysql.mysql_db:
+        name: nextcloud
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
     - name: Create database user
       community.mysql.mysql_user:
         name: user1
         password: pswd
         state: present
-        login_unix_socket: /var/run/mysqld/mysqld.sock
-
-    - name: Создание базы данных MySQL
-      community.mysql.mysql_db:
-        name: nextcloud
-        state: present
+        priv: "nextcloud.*:ALL"
         login_unix_socket: /var/run/mysqld/mysqld.sock
 
     - name: Установка NextCloud
