@@ -1,0 +1,46 @@
+---
+- name: Configure Nextcloud
+  hosts: deploy-vm
+  become: yes # права root при выполнении команд
+  gather_facts: no
+  vars:
+    nextcloud_version: "latest"
+
+  tasks:
+    - name: Обновление системы
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: Установка пакетов для Nextcloud
+      ansible.builtin.apt:
+        name:
+          - apache2
+          - mariadb-server
+          - libapache2-mod-php
+          - php-gd
+          - php-mysql
+          - php-curl
+          - php-mbstring
+          - php-intl
+          - php-gmp
+          - php-bcmath
+          - php-xml
+          - php-imagick
+          - php-zip
+        state: present
+
+    - name: Create database user
+      community.mysql.mysql_user:
+        name: user1
+        password: pswd
+        state: present
+
+    - name: Создание базы данных MySQL
+      community.mysql.mysql_db:
+        name: nextcloud
+        owner: user1
+
+
+
+
